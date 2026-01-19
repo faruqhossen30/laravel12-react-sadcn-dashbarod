@@ -1,0 +1,13 @@
+{
+    "agents": [
+        "cursor",
+        "trae"
+    ],
+    "editors": [
+        "cursor",
+        "phpstorm",
+        "trae",
+        "vscode"
+    ],
+    "guidelines": []
+}
