@@ -13,6 +13,15 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from '@/Components/ui/alert-dialog';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/Components/ui/table';
+import { Paginate } from '@/Components/Paginate';
 
 export default function Index({ permissions }: { permissions: any }) {
     return (
@@ -26,19 +35,21 @@ export default function Index({ permissions }: { permissions: any }) {
                     <CardTitle>Permission List</CardTitle>
                 </CardHeader>
                 <CardContent>
-                     <div className="rounded-md border">
-                        <table className="w-full text-sm text-left">
-                            <thead className="bg-muted/50 text-muted-foreground">
-                                <tr>
-                                    <th className="px-4 py-3 font-medium">Name</th>
-                                    <th className="px-4 py-3 font-medium">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {permissions.data.map((permission: any) => (
-                                    <tr key={permission.id} className="border-t">
-                                        <td className="px-4 py-3">{permission.name}</td>
-                                        <td className="px-4 py-3 flex gap-2">
+                    <div className="rounded-md border">
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>S.N</TableHead>
+                                    <TableHead>Name</TableHead>
+                                    <TableHead>Actions</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {permissions.data.map((permission: any, index: number) => (
+                                    <TableRow key={permission.id}>
+                                        <TableCell>{(permissions.current_page - 1) * permissions.per_page + index + 1}</TableCell>
+                                        <TableCell>{permission.name}</TableCell>
+                                        <TableCell className="flex gap-2">
                                             <Link href={route('admin.permissions.edit', permission.id)}>
                                                 <Button variant="outline" size="sm">Edit</Button>
                                             </Link>
@@ -61,18 +72,21 @@ export default function Index({ permissions }: { permissions: any }) {
                                                     </AlertDialogFooter>
                                                 </AlertDialogContent>
                                             </AlertDialog>
-                                        </td>
-                                    </tr>
+                                        </TableCell>
+                                    </TableRow>
                                 ))}
                                 {permissions.data.length === 0 && (
-                                    <tr>
-                                        <td colSpan={2} className="px-4 py-3 text-center text-muted-foreground">
+                                    <TableRow>
+                                        <TableCell colSpan={3} className="text-center text-muted-foreground">
                                             No permissions found.
-                                        </td>
-                                    </tr>
+                                        </TableCell>
+                                    </TableRow>
                                 )}
-                            </tbody>
-                        </table>
+                            </TableBody>
+                        </Table>
+                    </div>
+                    <div className="mt-4">
+                        <Paginate paginator={permissions} />
                     </div>
                 </CardContent>
             </Card>

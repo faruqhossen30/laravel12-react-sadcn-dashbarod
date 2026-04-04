@@ -13,11 +13,20 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from '@/Components/ui/alert-dialog';
+import { Paginate } from '@/Components/Paginate';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/Components/ui/table';
 
-export default function Index({ users }: { users: any }) {
+export default function Index({ users, title = 'Users' }: { users: any, title?: string }) {
     return (
-        <AdminLayout header="Users">
-            <Head title="Users" />
+        <AdminLayout header={title}>
+            <Head title={title} />
             <div className="flex justify-end mb-4">
                 <Link href={route('admin.users.create')}>
                     <Button>Create User</Button>
@@ -25,28 +34,30 @@ export default function Index({ users }: { users: any }) {
             </div>
             <Card>
                 <CardHeader>
-                    <CardTitle>User List</CardTitle>
+                    <CardTitle>{title}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                     <div className="rounded-md border">
-                        <table className="w-full text-sm text-left">
-                            <thead className="bg-muted/50 text-muted-foreground">
-                                <tr>
-                                    <th className="px-4 py-3 font-medium">Name</th>
-                                    <th className="px-4 py-3 font-medium">Email</th>
-                                    <th className="px-4 py-3 font-medium">Roles</th>
-                                    <th className="px-4 py-3 font-medium">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {users.data.map((user: any) => (
-                                    <tr key={user.id} className="border-t">
-                                        <td className="px-4 py-3">{user.name}</td>
-                                        <td className="px-4 py-3">{user.email}</td>
-                                        <td className="px-4 py-3">
+                    <div className="rounded-md border">
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>S.N</TableHead>
+                                    <TableHead>Name</TableHead>
+                                    <TableHead>Email</TableHead>
+                                    <TableHead>Roles</TableHead>
+                                    <TableHead>Actions</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {users.data.map((user: any, index: number) => (
+                                    <TableRow key={user.id}>
+                                        <TableCell>{(users.current_page - 1) * users.per_page + index + 1}</TableCell>
+                                        <TableCell>{user.name}</TableCell>
+                                        <TableCell>{user.email}</TableCell>
+                                        <TableCell>
                                             {user.roles?.map((r: any) => r.name).join(', ')}
-                                        </td>
-                                        <td className="px-4 py-3 flex gap-2">
+                                        </TableCell>
+                                        <TableCell className="flex gap-2">
                                             <Link href={route('admin.users.edit', user.id)}>
                                                 <Button variant="outline" size="sm">Edit</Button>
                                             </Link>
@@ -69,18 +80,21 @@ export default function Index({ users }: { users: any }) {
                                                     </AlertDialogFooter>
                                                 </AlertDialogContent>
                                             </AlertDialog>
-                                        </td>
-                                    </tr>
+                                        </TableCell>
+                                    </TableRow>
                                 ))}
                                 {users.data.length === 0 && (
-                                    <tr>
-                                        <td colSpan={4} className="px-4 py-3 text-center text-muted-foreground">
+                                    <TableRow>
+                                        <TableCell colSpan={5} className="text-center text-muted-foreground">
                                             No users found.
-                                        </td>
-                                    </tr>
+                                        </TableCell>
+                                    </TableRow>
                                 )}
-                            </tbody>
-                        </table>
+                            </TableBody>
+                        </Table>
+                    </div>
+                    <div className="mt-4">
+                        <Paginate paginator={users} />
                     </div>
                 </CardContent>
             </Card>

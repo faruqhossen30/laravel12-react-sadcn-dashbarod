@@ -58,8 +58,12 @@ export const data = {
       isActive: false,
       items: [
         {
+          title: "Users",
+          url: route('admin.users.index'),
+        },
+        {
           title: "Admins",
-          url: "#",
+          url: route('admin.admins.index'),
         },
         {
           title: "Roles",

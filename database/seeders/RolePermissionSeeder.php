@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -17,44 +18,43 @@ class RolePermissionSeeder extends Seeder
         // Reset cached roles and permissions
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // Create permissions
-        $permissions = [
-            'view users',
-            'create users',
-            'edit users',
-            'delete users',
-            'view roles',
-            'create roles',
-            'edit roles',
-            'delete roles',
-            'view permissions',
-            'create permissions',
-            'edit permissions',
-            'delete permissions',
-        ];
+        // Define permissions
+        $models = ['User', 'Role'];
+        $actions = ['list', 'create', 'update', 'delete'];
 
-        foreach ($permissions as $permission) {
-            Permission::firstOrCreate(['name' => $permission, 'guard_name' => 'web']);
+        // Create permissions
+        foreach ($models as $model) {
+            foreach ($actions as $action) {
+                Permission::findOrCreate(strtolower($model) . '.' . $action);
+            }
         }
 
-        // Create roles and assign existing permissions
-        $role1 = Role::firstOrCreate(['name' => 'super-admin', 'guard_name' => 'web']);
-        // gets all permissions via Gate::before rule; see AuthServiceProvider
+        // Create roles and assign permissions
+        $superAdminRole = Role::findOrCreate('super-admin');
+        $superAdminRole->givePermissionTo(Permission::all());
 
-        $role2 = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
-        $role2->givePermissionTo('view users');
-        $role2->givePermissionTo('create users');
-        $role2->givePermissionTo('edit users');
-        $role2->givePermissionTo('view roles');
-        $role2->givePermissionTo('view permissions');
+        $adminRole = Role::findOrCreate('admin');
+        // Admin gets all for now
+        $adminRole->givePermissionTo(Permission::all());
 
-        $role3 = Role::firstOrCreate(['name' => 'user', 'guard_name' => 'web']);
-        // User gets no specific permissions by default in this example
+        $userRole = Role::findOrCreate('user');
+        // Regular user might only get list for now
+        $userRole->givePermissionTo(['user.list']);
 
-        // Assign super-admin role to the first user if exists
-        $user = \App\Models\User::first();
-        if ($user) {
-            $user->assignRole($role1, $role2);
+        // Assign roles to seeded users
+        $superAdminUser = User::where('email', 'admin@gmail.com')->first();
+        if ($superAdminUser) {
+            $superAdminUser->assignRole($superAdminRole);
+        }
+
+        $adminUser = User::where('email', 'staff@gmail.com')->first();
+        if ($adminUser) {
+            $adminUser->assignRole($adminRole);
+        }
+
+        $regularUser = User::where('email', 'user@gmail.com')->first();
+        if ($regularUser) {
+            $regularUser->assignRole($userRole);
         }
     }
 }

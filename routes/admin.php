@@ -16,10 +16,10 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::get('admins', [UserController::class, 'admins'])->name('admin.admins.index');
     Route::resource('users', UserController::class)->names('admin.users');
     Route::resource('roles', RoleController::class)->names('admin.roles');
     Route::resource('permissions', PermissionController::class)
         ->only(['index', 'edit', 'update', 'destroy'])
         ->names('admin.permissions');
-    Route::resource('tenants', TenantController::class)->names('admin.tenants');
 });

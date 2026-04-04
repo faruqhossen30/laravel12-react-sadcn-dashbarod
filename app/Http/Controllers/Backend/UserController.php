@@ -18,10 +18,10 @@ class UserController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('permission:view users', only: ['index']),
-            new Middleware('permission:create users', only: ['create', 'store']),
-            new Middleware('permission:edit users', only: ['edit', 'update']),
-            new Middleware('permission:delete users', only: ['destroy']),
+            new Middleware('permission:user.list', only: ['index', 'admins']),
+            new Middleware('permission:user.create', only: ['create', 'store']),
+            new Middleware('permission:user.update', only: ['edit', 'update']),
+            new Middleware('permission:user.delete', only: ['destroy']),
         ];
     }
 
@@ -34,6 +34,22 @@ class UserController extends Controller implements HasMiddleware
 
         return Inertia::render('Backend/User/Index', [
             'users' => $users,
+        ]);
+    }
+
+    /**
+     * Display a listing of administrative users.
+     */
+    public function admins(): Response
+    {
+        $admins = User::role(['super-admin', 'admin'])
+            ->with('roles')
+            ->latest()
+            ->paginate(10);
+
+        return Inertia::render('Backend/User/Index', [
+            'users' => $admins,
+            'title' => 'Admin List',
         ]);
     }
 

@@ -22,10 +22,19 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('123'),
         ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        User::create([
+            'name' => 'Admin User',
+            'email' => 'staff@gmail.com',
+            'password' => Hash::make('123'),
         ]);
+
+        User::create([
+            'name' => 'Regular User',
+            'email' => 'user@gmail.com',
+            'password' => Hash::make('123'),
+        ]);
+
+        User::factory(50)->create();
 
         $this->call(RolePermissionSeeder::class);
     }

@@ -13,6 +13,15 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from '@/Components/ui/alert-dialog';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/Components/ui/table';
+import { Paginate } from '@/Components/Paginate';
 
 export default function Index({ roles }: { roles: any }) {
     return (
@@ -28,23 +37,25 @@ export default function Index({ roles }: { roles: any }) {
                     <CardTitle>Role List</CardTitle>
                 </CardHeader>
                 <CardContent>
-                     <div className="rounded-md border">
-                        <table className="w-full text-sm text-left">
-                            <thead className="bg-muted/50 text-muted-foreground">
-                                <tr>
-                                    <th className="px-4 py-3 font-medium">Name</th>
-                                    <th className="px-4 py-3 font-medium">Permissions</th>
-                                    <th className="px-4 py-3 font-medium">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {roles.data.map((role: any) => (
-                                    <tr key={role.id} className="border-t">
-                                        <td className="px-4 py-3">{role.name}</td>
-                                        <td className="px-4 py-3">
+                    <div className="rounded-md border">
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>S.N</TableHead>
+                                    <TableHead>Name</TableHead>
+                                    <TableHead>Permissions</TableHead>
+                                    <TableHead>Actions</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {roles.data.map((role: any, index: number) => (
+                                    <TableRow key={role.id}>
+                                        <TableCell>{(roles.current_page - 1) * roles.per_page + index + 1}</TableCell>
+                                        <TableCell>{role.name}</TableCell>
+                                        <TableCell>
                                             {role.permissions?.map((p: any) => p.name).join(', ')}
-                                        </td>
-                                        <td className="px-4 py-3 flex gap-2">
+                                        </TableCell>
+                                        <TableCell className="flex gap-2">
                                             <Link href={route('admin.roles.edit', role.id)}>
                                                 <Button variant="outline" size="sm">Edit</Button>
                                             </Link>
@@ -69,18 +80,21 @@ export default function Index({ roles }: { roles: any }) {
                                                     </AlertDialogContent>
                                                 </AlertDialog>
                                             )}
-                                        </td>
-                                    </tr>
+                                        </TableCell>
+                                    </TableRow>
                                 ))}
                                 {roles.data.length === 0 && (
-                                    <tr>
-                                        <td colSpan={3} className="px-4 py-3 text-center text-muted-foreground">
+                                    <TableRow>
+                                        <TableCell colSpan={4} className="text-center text-muted-foreground">
                                             No roles found.
-                                        </td>
-                                    </tr>
+                                        </TableCell>
+                                    </TableRow>
                                 )}
-                            </tbody>
-                        </table>
+                            </TableBody>
+                        </Table>
+                    </div>
+                    <div className="mt-4">
+                        <Paginate paginator={roles} />
                     </div>
                 </CardContent>
             </Card>
