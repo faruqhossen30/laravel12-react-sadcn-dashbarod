@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\PermissionController;
 use App\Http\Controllers\Backend\RoleController;
 use App\Http\Controllers\Backend\TenantController;
@@ -22,4 +23,5 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
     Route::resource('permissions', PermissionController::class)
         ->only(['index', 'edit', 'update', 'destroy'])
         ->names('admin.permissions');
+    Route::resource('categories', CategoryController::class)->names('admin.categories');
 });

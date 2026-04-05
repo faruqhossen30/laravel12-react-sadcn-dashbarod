@@ -70,6 +70,10 @@ export const data = {
           url: route('admin.roles.index'),
         },
         {
+          title: "Categories",
+          url: route('admin.categories.index'),
+        },
+        {
           title: "Settings",
           url: "#",
         },
