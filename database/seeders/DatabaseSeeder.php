@@ -36,6 +36,9 @@ class DatabaseSeeder extends Seeder
 
         User::factory(50)->create();
 
-        $this->call(RolePermissionSeeder::class);
+        $this->call([
+            RolePermissionSeeder::class,
+            BlogSeeder::class,
+        ]);
     }
 }

@@ -74,6 +74,10 @@ export const data = {
           url: route('admin.categories.index'),
         },
         {
+          title: "Blogs",
+          url: route('admin.blogs.index'),
+        },
+        {
           title: "Settings",
           url: "#",
         },
@@ -84,6 +88,11 @@ export const data = {
     {
       name: "Dashboard",
       url: route('dashboard'),
+      icon: Frame,
+    },
+    {
+      name: "Races",
+      url: route('admin.races.index'),
       icon: Frame,
     }
   ],

@@ -24,4 +24,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
         ->only(['index', 'edit', 'update', 'destroy'])
         ->names('admin.permissions');
     Route::resource('categories', CategoryController::class)->names('admin.categories');
+    Route::post('media/upload', [\App\Http\Controllers\Backend\MediaUploadController::class, 'upload'])->name('admin.media.upload');
+    Route::resource('blogs', \App\Http\Controllers\Backend\BlogController::class)->names('admin.blogs');
+    Route::resource('races', \App\Http\Controllers\Backend\RaceController::class)->names('admin.races');
 });

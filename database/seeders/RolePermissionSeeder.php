@@ -19,7 +19,7 @@ class RolePermissionSeeder extends Seeder
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         // Define permissions
-        $models = ['User', 'Role'];
+        $models = ['User', 'Role', 'Race', 'Qualifier'];
         $actions = ['list', 'create', 'update', 'delete'];
 
         // Create permissions
