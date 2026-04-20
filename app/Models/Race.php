@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Race extends Model
 {
+    use HasFactory;
     protected $fillable = [
         'title',
         'slug',
@@ -47,6 +49,6 @@ class Race extends Model
 
     public function qualifiers()
     {
-        return $this->belongsToMany(Qualifier::class);
+        return $this->belongsToMany(Qualifier::class, 'race_qualifier');
     }
 }

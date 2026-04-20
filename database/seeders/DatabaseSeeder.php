@@ -37,8 +37,11 @@ class DatabaseSeeder extends Seeder
         User::factory(50)->create();
 
         $this->call([
+            // WorldSeeder::class,
             RolePermissionSeeder::class,
+            MasterDataSeeder::class,
             BlogSeeder::class,
+            RaceSeeder::class,
         ]);
     }
 }

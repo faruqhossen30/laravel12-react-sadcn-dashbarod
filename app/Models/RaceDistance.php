@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class RaceDistance extends Model
 {
+    use HasFactory;
     protected $fillable = [
         'race_id',
         'distance_value',

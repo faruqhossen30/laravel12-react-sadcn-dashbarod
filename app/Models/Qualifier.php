@@ -10,6 +10,6 @@ class Qualifier extends Model
 
     public function races()
     {
-        return $this->belongsToMany(Race::class);
+        return $this->belongsToMany(Race::class, 'race_qualifier');
     }
 }

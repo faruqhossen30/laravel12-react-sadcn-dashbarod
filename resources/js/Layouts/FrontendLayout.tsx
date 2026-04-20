@@ -36,9 +36,9 @@ export default function FrontendLayout({ children, title }: PropsWithChildren<{ 
     }, []);
 
     const navLinks = [
+        { name: 'Races', href: route('races.index') },
         { name: 'Find a Trip', href: '#' },
         { name: 'Destinations', href: '#' },
-        { name: 'Organizers', href: '#' },
         { name: 'News', href: route('news.index') },
     ];
 
